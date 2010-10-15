@@ -16,7 +16,7 @@ DESCRIPTION
     3. Remove the residue around the holes with a piece of cloth, leaving the color in the holes intact.
 
 EXAMPLE
-    ./qr2scad.py < QRcode.png > test.scad
+    ./qr2scad.py < example.png > example.scad
 
 BUGS
     Please email bugs to victor dot engmark at gmail dot com.
