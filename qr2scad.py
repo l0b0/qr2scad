@@ -41,7 +41,12 @@ signal.signal(signal.SIGPIPE, signal.SIG_DFL)
 """Avoid 'Broken pipe' message when canceling piped command."""
 
 def qr2scad():
-    """Convert black pixels to OpenSCAD cubes"""
+    """
+    Convert black pixels to OpenSCAD cubes.
+    Cubes have to be less than 1 unit wide. Otherwise you will get the message
+    "Object isn't a valid 2-manifold!" on STL export (see 
+    <http://en.wikibooks.org/wiki/OpenSCAD_User_Manual/STL_Import_and_Export>)
+    """
 
     img = Image.open(sys.stdin)
     width, height = img.size
@@ -54,8 +59,8 @@ def qr2scad():
                 print '    translate([%(x)s, -%(y)s, 0])' % {
                     'x': column - width / 2,
                     'y': row - height / 2
-                }, 'cube();'
-    print "}"
+                }, 'cube([0.99, 0.99, 1]);'
+    print '}'
     print 'qrcode();'
 
 def main(argv = None):
