@@ -1,0 +1,3 @@
+Use thresholds so it can work with files that are not only black/white.
+
+Use a QR code reading framework in the background to make it able to read codes from photos.
