@@ -56,9 +56,9 @@ def qr2scad():
     for row in range(height):
         for column in range(width):
             if sum(img_matrix[column, row]) == 0:
-                print '    translate([%(x)s, -%(y)s, 0])' % {
+                print '    translate([%(x)s, %(y)s, 0])' % {
                     'x': column - width / 2,
-                    'y': row - height / 2
+                    'y': -row + height / 2
                 }, 'cube([0.99, 0.99, 1]);'
     print '}'
     print 'qrcode();'
