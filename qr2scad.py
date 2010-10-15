@@ -41,18 +41,19 @@ signal.signal(signal.SIGPIPE, signal.SIG_DFL)
 """Avoid 'Broken pipe' message when canceling piped command."""
 
 def qr2scad():
+    """Convert black pixels to OpenSCAD cubes"""
+
     img = Image.open(sys.stdin)
     width, height = img.size
 
-    # Convert image to boolean matrix (black is True)
     img_matrix = img.load()
     print 'module qrcode() {'
     for row in range(height):
         for column in range(width):
-            if img_matrix[column, row] == (0, 0, 0) or img_matrix[column, row] == 0:
-                print '    translate([%(x)s, -%(y)s, -1])' % {
-                    'x': column,
-                    'y': row
+            if sum(img_matrix[column, row]) == 0:
+                print '    translate([%(x)s, -%(y)s, 0])' % {
+                    'x': column - width / 2,
+                    'y': row - height / 2
                 }, 'cube();'
     print "}"
     print 'qrcode();'
