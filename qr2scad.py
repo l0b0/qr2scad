@@ -13,7 +13,12 @@ DESCRIPTION
     The result can be used in an existing OpenSCAD file as follows:
     1. Remove the QR code from a flat surface using the difference() function.
     2. After printing, splash some removable paint or ink on the QR code holes.
-    3. Remove the residue around the holes with a piece of cloth, leaving the color in the holes intact.
+    3. Remove the residue around the holes with a piece of cloth, leaving the
+    color in the holes intact.
+    
+    This code does not optimize the output in any way. If you get a really big
+    result file, try to scale it down and verify that it is still readable
+    using <http://zxing.org/w/decode.jspx>.
 
 EXAMPLE
     ./qr2scad.py < example.png > example.scad
