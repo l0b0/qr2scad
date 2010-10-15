@@ -20,8 +20,10 @@ DESCRIPTION
     result file, try to scale it down and verify that it is still readable
     using <http://zxing.org/w/decode.jspx>.
 
-EXAMPLE
+EXAMPLES
     ./qr2scad.py < example.png > example.scad
+
+    <http://www.thingiverse.com/thing:4448>
 
 BUGS
     Please email bugs to victor dot engmark at gmail dot com.
