@@ -39,42 +39,76 @@ __copyright__ = 'Copyright (C) 2010 Victor Engmark'
 __license__ = 'GPLv3'
 
 import os
-from PIL import Image
+from PIL import Image, ImageOps
 import signal
 import sys
 
-BLOCK_HORIZONTAL_SIZE = 0.99
+BLOCK_SIZE = 1
+"""<http://www.denso-wave.com/qrcode/qrgene3-e.html> recommends at least four
+dots per module, so with a 0.1mm accuracy you should use at least 0.4 +
+BLOCK_PADDING.
+"""
+
+BLOCK_PADDING = 0.01
 """Cubes have to be less than 1 unit wide. Otherwise you will get the message
-"Object isn't a valid 2-manifold!" on STL export (see 
+"Object isn't a valid 2-manifold!" on STL export (see
 <http://en.wikibooks.org/wiki/OpenSCAD_User_Manual/STL_Import_and_Export>)."""
+
+BLOCK_SIDE = BLOCK_SIZE - BLOCK_PADDING
+"""This is the actual side length of a block."""
 
 signal.signal(signal.SIGPIPE, signal.SIG_DFL)
 """Avoid 'Broken pipe' message when canceling piped command."""
+
+PDP_SIDE = 7
+"""The position detection patterns (PDPs) are 7x7 pixels."""
+
 
 def qr2scad():
     """Convert black pixels to OpenSCAD cubes."""
 
     img = Image.open(sys.stdin)
+
+    # Convert to black and white 8-bit
+    if img.mode != 'L':
+        img = img.convert('L')
+
+    # Invert color to get the right bounding box
+    img = ImageOps.invert(img)
+
+    bbox = img.getbbox()
+
+    # Crop to only contain contents within the PDPs
+    img = img.crop(bbox)
+
     width, height = img.size
 
-    img_matrix = img.load()
-    print 'module qrcode() {'
-    for row in range(height):
-        for column in range(width):
-            pixel = img_matrix[column, row]
-            if isinstance(pixel, tuple):
-                pixel_sum = sum(pixel)
-            elif isinstance(pixel, int):
-                pixel_sum = pixel
-            else:
-                raise 'Unknown pixel data type ' + type(pixel)
+    assert width == height,\
+        'The QR code should be a square, but we found it to be %(w)sx%(h)s' % {
+            'w': width,
+            'h': height
+        }
 
-            if pixel_sum == 0:
+    qr_side = width
+
+    # Get the resize factor from the PDP size
+    new_size = qr_side / (list(img.getdata()).index(0) / (PDP_SIDE - 1))
+    
+    # Set a more reasonable size
+    img = img.resize((new_size, new_size))
+    qr_side = new_size
+
+    img_matrix = img.load()
+
+    print 'module qrcode() {'
+    for row in range(qr_side):
+        for column in range(qr_side):
+            if img_matrix[column, row] != 0:
                 print '    translate([%(x)s, %(y)s, 0])' % {
-                    'x': column - width / 2,
-                    'y': -row + height / 2
-                }, 'cube([%(horizontal_size)s, %(horizontal_size)s, 1]);' % {
-                    'horizontal_size': BLOCK_HORIZONTAL_SIZE
+                    'x': BLOCK_SIZE * column - qr_side / 2,
+                    'y': -BLOCK_SIZE * row + qr_side / 2
+                }, 'cube([%(block_side)s, %(block_side)s, 1]);' % {
+                    'block_side': BLOCK_SIDE
                 }
     print '}'
     print 'qrcode();'

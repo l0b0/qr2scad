@@ -4,4 +4,3 @@ Use a QR code reading framework in the background to make it able to read codes 
 
 Optimize output. One possibility is to merge adjacent blocks. If N blocks are adjacent, they should be replaced by a single block that is size N - 0.01 in the direction they are lying. Naturally, this can be done either horizontally or vertically, so ideally we should do both and output the smallest model of the two.
 
-Optimize input. To do so, first remove all the white space around the QR code. Then find the width of the squares in the three corners (it's enough to check any two corners to find a match). Scale the image by width/7 (the squares should be a multiple of seven pixels to each side). The result should be the minimal QR code image, resulting in the minimal OpenSCAD file.

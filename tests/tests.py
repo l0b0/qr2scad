@@ -22,6 +22,7 @@ import unittest
 
 from qr2scad import qr2scad
 
+EXAMPLE_BIG = os.path.join(os.path.dirname(__file__), './example_big.png')
 EXAMPLE_BW = os.path.join(os.path.dirname(__file__), './example_bw.png')
 EXAMPLE_RGB = os.path.join(os.path.dirname(__file__), './example_rgb.png')
 
@@ -51,6 +52,9 @@ class TestConvert(unittest.TestCase):
             self.assertNotEqual(
                 result,
                 '')
+            self.assertNotEqual(
+                result,
+                'module qrcode() {\n}\nqrcode();\n')
         finally:
             sys.stdin = self.stdin
             sys.stdout = self.stdout
@@ -68,16 +72,51 @@ class TestConvert(unittest.TestCase):
             self.assertNotEqual(
                 result,
                 '')
+            self.assertNotEqual(
+                result,
+                'module qrcode() {\n}\nqrcode();\n')
         finally:
             sys.stdin = self.stdin
             sys.stdout = self.stdout
             self.input_stream.close()
 
 
-    def test_bw_rgb(self):
-        """Check that an RGB image gives the same output as for the equivalent
-        black-and-white image."""
+    def test_big(self):
+        """Check that a big image gives output."""
         try:
+            sys.stdout = self.output_stream
+            self.input_stream = open(EXAMPLE_BIG)
+            sys.stdin = self.input_stream
+            qr2scad.main()
+            result = self.output_stream.getvalue()
+            self.assertNotEqual(
+                result,
+                '')
+            self.assertNotEqual(
+                result,
+                'module qrcode() {\n}\nqrcode();\n')
+        finally:
+            sys.stdin = self.stdin
+            sys.stdout = self.stdout
+            self.input_stream.close()
+
+
+    def test_equal(self):
+        """Check that the valid examples all result in the same output."""
+        try:
+            sys.stdout = self.output_stream
+            self.input_stream = open(EXAMPLE_BIG)
+            sys.stdin = self.input_stream
+            qr2scad.main()
+            result_big = self.output_stream.getvalue()
+        finally:
+            sys.stdin = self.stdin
+            sys.stdout = self.stdout
+            self.input_stream.close()
+            self.output_stream.close()
+
+        try:
+            self.output_stream = StringIO()
             sys.stdout = self.output_stream
             self.input_stream = open(EXAMPLE_BW)
             sys.stdin = self.input_stream
@@ -100,7 +139,14 @@ class TestConvert(unittest.TestCase):
             sys.stdin = self.stdin
             sys.stdout = self.stdout
             self.input_stream.close()
+            self.output_stream.close()
 
+        self.assertNotEqual(
+            result_big,
+            '')
+        self.assertNotEqual(
+            result_big,
+            'module qrcode() {\n}\nqrcode();\n')
         self.assertNotEqual(
             result_bw,
             '')
@@ -110,6 +156,9 @@ class TestConvert(unittest.TestCase):
         self.assertEqual(
             result_bw,
             result_rgb)
+        self.assertEqual(
+            result_big,
+            result_bw)
 
 
     def tearDown(self):
