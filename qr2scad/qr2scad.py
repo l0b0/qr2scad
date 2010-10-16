@@ -61,7 +61,15 @@ def qr2scad():
     print 'module qrcode() {'
     for row in range(height):
         for column in range(width):
-            if sum(img_matrix[column, row]) == 0:
+            pixel = img_matrix[column, row]
+            if isinstance(pixel, tuple):
+                pixel_sum = sum(pixel)
+            elif isinstance(pixel, int):
+                pixel_sum = pixel
+            else:
+                raise 'Unknown pixel data type ' + type(pixel)
+
+            if pixel_sum == 0:
                 print '    translate([%(x)s, %(y)s, 0])' % {
                     'x': column - width / 2,
                     'y': -row + height / 2
