@@ -73,4 +73,4 @@ def main(argv = None):
     qr2scad()
 
 if __name__ == '__main__':
-    main()
+    sys.exit(main())
