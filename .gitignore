@@ -1,1 +1,5 @@
+**/*.pyc
 *.scad
+build/
+dist/
+qr2scad.egg-info/
