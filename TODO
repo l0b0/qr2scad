@@ -1,3 +1,7 @@
+Unit tests.
+
+Python Package Index structure, to be able to easy_install it.
+
 Use thresholds so it can work with files that are not only black/white.
 
 Use a QR code reading framework in the background to make it able to read codes from photos.
