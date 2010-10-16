@@ -16,44 +16,110 @@ __license__ = 'GPLv3'
 
 import doctest
 import os
-from StringIO import StringIO
+from cStringIO import StringIO
 import sys
 import unittest
 
 from qr2scad import qr2scad
 
-EXAMPLE_FILE = os.path.join(os.path.dirname(__file__), './example.png')
+EXAMPLE_BW = os.path.join(os.path.dirname(__file__), './example_bw.png')
+EXAMPLE_RGB = os.path.join(os.path.dirname(__file__), './example_rgb.png')
+
 
 class TestConvert(unittest.TestCase):
     """Framework for testing file conversion."""
     # pylint: disable-msg=R0904
 
     def setUp(self):
-        """Set stdin and stdout."""
+        """Set streams."""
         # pylint: disable-msg=C0103
-        self.stdin_backup = sys.stdin
-
-        self.stdout_backup = sys.stdout
+        self.input_stream = None
+        self.stdin = sys.stdin
+ 
         self.output_stream = StringIO()
-        sys.stdout = self.output_stream
-        
-        self.output_file = None
+        self.stdout = sys.stdout
 
 
-    def test_standard_file(self):
-        """Check that a simple QR code results in some data."""
-        sys.stdin = open(EXAMPLE_FILE)
-        qr2scad.main()
+    def test_black_and_white(self):
+        """Check that a black-and-white image gives output."""
+        try:
+            sys.stdout = self.output_stream
+            self.input_stream = open(EXAMPLE_BW)
+            sys.stdin = self.input_stream
+            qr2scad.main()
+            result = self.output_stream.getvalue()
+            self.assertNotEqual(
+                result,
+                '')
+        finally:
+            sys.stdin = self.stdin
+            sys.stdout = self.stdout
+            self.input_stream.close()
+
+
+    def test_rgb(self):
+        """Check that an RGB image gives output."""
+        try:
+            sys.stdout = self.output_stream
+            self.input_stream = open(EXAMPLE_RGB)
+            sys.stdin = self.input_stream
+            qr2scad.main()
+            result = self.output_stream.getvalue()
+            self.assertNotEqual(
+                result,
+                '')
+        finally:
+            sys.stdin = self.stdin
+            sys.stdout = self.stdout
+            self.input_stream.close()
+
+
+    def test_bw_rgb(self):
+        """Check that an RGB image gives the same output as for the equivalent
+        black-and-white image."""
+        try:
+            sys.stdout = self.output_stream
+            self.input_stream = open(EXAMPLE_BW)
+            sys.stdin = self.input_stream
+            qr2scad.main()
+            result_bw = self.output_stream.getvalue()
+        finally:
+            sys.stdin = self.stdin
+            sys.stdout = self.stdout
+            self.input_stream.close()
+            self.output_stream.close()
+
+        try:
+            self.output_stream = StringIO()
+            sys.stdout = self.output_stream
+            self.input_stream = open(EXAMPLE_RGB)
+            sys.stdin = self.input_stream
+            qr2scad.main()
+            result_rgb = self.output_stream.getvalue()
+        finally:
+            sys.stdin = self.stdin
+            sys.stdout = self.stdout
+            self.input_stream.close()
+
         self.assertNotEqual(
-            self.output_stream.getvalue(),
+            result_bw,
             '')
+        self.assertNotEqual(
+            result_rgb,
+            '')
+        self.assertEqual(
+            result_bw,
+            result_rgb)
 
 
     def tearDown(self):
-        """Restore stdin and stdout."""
+        """Close streams."""
         # pylint: disable-msg=C0103
-        sys.stdin = self.stdin_backup
-        sys.stdout = self.stdout_backup
+        self.input_stream.close()
+        sys.stdin = self.stdin
+
+        self.output_stream.close()
+        sys.stdout = self.stdout
 
 
 class TestDoc(unittest.TestCase):
