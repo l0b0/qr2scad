@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """qr2scad - Convert QR code images to OpenSCAD
 <http://github.com/l0b0/qr2scad>
