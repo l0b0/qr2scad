@@ -1,32 +1,36 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
-"""
-NAME
-    qr2scad.py
+"""qr2scad - Convert QR code images to OpenSCAD
+<http://github.com/l0b0/qr2scad>
 
-SYNOPSIS
-    qr2scad.py < input_file
+Default syntax:
 
-DESCRIPTION
-    Convert QR code images to OpenSCAD.
+qr2scad < input_file
 
-    The result can be used in an existing OpenSCAD file as follows:
-    1. Remove the QR code from a flat surface using the difference() function.
-    2. After printing, splash some removable paint or ink on the QR code holes.
-    3. Remove the residue around the holes with a piece of cloth, leaving the
-    color in the holes intact.
-    
-    This code does not optimize the output in any way. If you get a really big
-    result file, try to scale it down and verify that it is still readable
-    using <http://zxing.org/w/decode.jspx>.
+Description:
 
-EXAMPLES
-    ./qr2scad.py < example.png > example.scad
+For each black pixel in the input, it will create a cube in the output.
 
-    <http://www.thingiverse.com/thing:4448>
+The result can be used in an existing OpenSCAD file as follows:
+1. Remove the QR code from a flat surface using the difference() function.
+2. After printing, splash some removable paint or ink on the QR code holes.
+3. Remove the residue around the holes with a piece of cloth, leaving the
+color in the holes intact.
 
-BUGS
-    Please email bugs to victor dot engmark at gmail dot com.
+This code does not optimize the output in any way. If you get a really big
+result file, try to scale it down and verify that it is still readable
+using <http://zxing.org/w/decode.jspx>.
+
+Examples:
+
+./qr2scad.py < example.png > example.scad
+    Convert example.png to example.scad
+
+<http://www.thingiverse.com/thing:4448>
+
+Bugs:
+
+Please email bug reports to victor dot engmark at gmail dot com.
 """
 
 __author__ = 'Victor Engmark'
