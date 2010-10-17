@@ -14,132 +14,62 @@ __email__ = 'victor.engmark@gmail.com'
 __copyright__ = 'Copyright (C) 2010 Victor Engmark'
 __license__ = 'GPLv3'
 
-import doctest
-import os
-from cStringIO import StringIO
-import sys
+from doctest import testmod
+from os.path import join, dirname
 import unittest
 
 from qr2scad import qr2scad
 
-EXAMPLE_BIG = os.path.join(os.path.dirname(__file__), './example_big.png')
-EXAMPLE_BW = os.path.join(os.path.dirname(__file__), './example_bw.png')
-EXAMPLE_RGB = os.path.join(os.path.dirname(__file__), './example_rgb.png')
+EXAMPLE_BIG = join(dirname(__file__), './example_big.png')
+EXAMPLE_BW = join(dirname(__file__), './example_bw.png')
+EXAMPLE_RGB = join(dirname(__file__), './example_rgb.png')
 
 
 class TestConvert(unittest.TestCase):
     """Framework for testing file conversion."""
     # pylint: disable-msg=R0904
 
-    def setUp(self):
-        """Set streams."""
-        # pylint: disable-msg=C0103
-        self.input_stream = None
-        self.stdin = sys.stdin
- 
-        self.output_stream = StringIO()
-        self.stdout = sys.stdout
-
-
     def test_black_and_white(self):
         """Check that a black-and-white image gives output."""
-        try:
-            sys.stdout = self.output_stream
-            self.input_stream = open(EXAMPLE_BW)
-            sys.stdin = self.input_stream
-            qr2scad.main()
-            result = self.output_stream.getvalue()
-            self.assertNotEqual(
-                result,
-                '')
-            self.assertNotEqual(
-                result,
-                'module qrcode() {\n}\nqrcode();\n')
-        finally:
-            sys.stdin = self.stdin
-            sys.stdout = self.stdout
-            self.input_stream.close()
+        result = qr2scad.qr2scad(open(EXAMPLE_BW))
+        self.assertNotEqual(
+            result,
+            '')
+        self.assertNotEqual(
+            result,
+            'module qrcode() {\n}\nqrcode();\n')
 
 
     def test_rgb(self):
         """Check that an RGB image gives output."""
-        try:
-            sys.stdout = self.output_stream
-            self.input_stream = open(EXAMPLE_RGB)
-            sys.stdin = self.input_stream
-            qr2scad.main()
-            result = self.output_stream.getvalue()
-            self.assertNotEqual(
-                result,
-                '')
-            self.assertNotEqual(
-                result,
-                'module qrcode() {\n}\nqrcode();\n')
-        finally:
-            sys.stdin = self.stdin
-            sys.stdout = self.stdout
-            self.input_stream.close()
+        result = qr2scad.qr2scad(open(EXAMPLE_RGB))
+        self.assertNotEqual(
+            result,
+            '')
+        self.assertNotEqual(
+            result,
+            'module qrcode() {\n}\nqrcode();\n')
 
 
     def test_big(self):
         """Check that a big image gives output."""
-        try:
-            sys.stdout = self.output_stream
-            self.input_stream = open(EXAMPLE_BIG)
-            sys.stdin = self.input_stream
-            qr2scad.main()
-            result = self.output_stream.getvalue()
-            self.assertNotEqual(
-                result,
-                '')
-            self.assertNotEqual(
-                result,
-                'module qrcode() {\n}\nqrcode();\n')
-        finally:
-            sys.stdin = self.stdin
-            sys.stdout = self.stdout
-            self.input_stream.close()
+        self.input_stream = open(EXAMPLE_BIG)
+        result = qr2scad.qr2scad(self.input_stream)
+        self.assertNotEqual(
+            result,
+            '')
+        self.assertNotEqual(
+            result,
+            'module qrcode() {\n}\nqrcode();\n')
 
 
     def test_equal(self):
         """Check that the valid examples all result in the same output."""
-        try:
-            sys.stdout = self.output_stream
-            self.input_stream = open(EXAMPLE_BIG)
-            sys.stdin = self.input_stream
-            qr2scad.main()
-            result_big = self.output_stream.getvalue()
-        finally:
-            sys.stdin = self.stdin
-            sys.stdout = self.stdout
-            self.input_stream.close()
-            self.output_stream.close()
+        result_big = qr2scad.qr2scad(open(EXAMPLE_BIG))
 
-        try:
-            self.output_stream = StringIO()
-            sys.stdout = self.output_stream
-            self.input_stream = open(EXAMPLE_BW)
-            sys.stdin = self.input_stream
-            qr2scad.main()
-            result_bw = self.output_stream.getvalue()
-        finally:
-            sys.stdin = self.stdin
-            sys.stdout = self.stdout
-            self.input_stream.close()
-            self.output_stream.close()
+        result_bw = qr2scad.qr2scad(open(EXAMPLE_BW))
 
-        try:
-            self.output_stream = StringIO()
-            sys.stdout = self.output_stream
-            self.input_stream = open(EXAMPLE_RGB)
-            sys.stdin = self.input_stream
-            qr2scad.main()
-            result_rgb = self.output_stream.getvalue()
-        finally:
-            sys.stdin = self.stdin
-            sys.stdout = self.stdout
-            self.input_stream.close()
-            self.output_stream.close()
+        result_rgb = qr2scad.qr2scad(open(EXAMPLE_RGB))
 
         self.assertNotEqual(
             result_big,
@@ -161,21 +91,11 @@ class TestConvert(unittest.TestCase):
             result_bw)
 
 
-    def tearDown(self):
-        """Close streams."""
-        # pylint: disable-msg=C0103
-        self.input_stream.close()
-        sys.stdin = self.stdin
-
-        self.output_stream.close()
-        sys.stdout = self.stdout
-
-
 class TestDoc(unittest.TestCase):
     """Test Python documentation strings."""
     def test_doc(self):
         """Documentation tests."""
-        self.assertEqual(doctest.testmod(qr2scad)[0], 0)
+        self.assertEqual(testmod(qr2scad)[0], 0)
 
 
 def main():

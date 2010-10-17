@@ -14,16 +14,20 @@ For each black pixel in the input, it will create a cube in the output.
 The result can be used in an existing OpenSCAD file as follows:
 1. Remove the QR code from a flat surface using the difference() function.
 2. After printing, splash some removable paint or ink on the QR code holes.
-3. Remove the residue around the holes with a piece of cloth, leaving the
-color in the holes intact.
+3. Remove the residue around the holes with a piece of cloth, leaving the color
+in the holes intact.
 
 This code does not optimize the output in any way. If you get a really big
 result file, try to scale it down and verify that it is still readable
 using <http://zxing.org/w/decode.jspx>.
 
+Installation / upgrade:
+
+sudo easy_install -U qr2scad
+
 Examples:
 
-./qr2scad.py < example.png > example.scad
+qr2scad < example.png > example.scad
     Convert example.png to example.scad
 
 <http://www.thingiverse.com/thing:4448>
@@ -38,9 +42,8 @@ __email__ = 'victor.engmark@gmail.com'
 __copyright__ = 'Copyright (C) 2010 Victor Engmark'
 __license__ = 'GPLv3'
 
-import os
 from PIL import Image, ImageOps
-import signal
+from signal import signal, SIGPIPE, SIG_DFL
 import sys
 
 BLOCK_SIZE = 1
@@ -57,17 +60,17 @@ BLOCK_PADDING = 0.01
 BLOCK_SIDE = BLOCK_SIZE - BLOCK_PADDING
 """This is the actual side length of a block."""
 
-signal.signal(signal.SIGPIPE, signal.SIG_DFL)
-"""Avoid 'Broken pipe' message when canceling piped command."""
-
 PDP_SIDE = 7
 """The position detection patterns (PDPs) are 7x7 pixels."""
 
+signal(SIGPIPE, SIG_DFL)
+"""Avoid 'Broken pipe' message when canceling piped command."""
 
-def qr2scad():
+
+def qr2scad(stream):
     """Convert black pixels to OpenSCAD cubes."""
 
-    img = Image.open(sys.stdin)
+    img = Image.open(stream)
 
     # Convert to black and white 8-bit
     if img.mode != 'L':
@@ -93,28 +96,32 @@ def qr2scad():
 
     # Get the resize factor from the PDP size
     new_size = qr_side / (list(img.getdata()).index(0) / (PDP_SIDE - 1))
-    
+
     # Set a more reasonable size
     img = img.resize((new_size, new_size))
     qr_side = new_size
 
     img_matrix = img.load()
+    
+    result = ''
 
-    print 'module qrcode() {'
+    result += 'module qrcode() {'
     for row in range(qr_side):
         for column in range(qr_side):
             if img_matrix[column, row] != 0:
-                print '    translate([%(x)s, %(y)s, 0])' % {
+                result += '    translate([%(x)s, %(y)s, 0])' % {
                     'x': BLOCK_SIZE * column - qr_side / 2,
                     'y': -BLOCK_SIZE * row + qr_side / 2
-                }, 'cube([%(block_side)s, %(block_side)s, 1]);' % {
+                }
+                result += 'cube([%(block_side)s, %(block_side)s, 1]);' % {
                     'block_side': BLOCK_SIDE
                 }
-    print '}'
-    print 'qrcode();'
+    result += '}'
+    result += 'qrcode();'
 
 def main(argv = None):
-    qr2scad()
+    result = qr2scad(sys.stdin)
+    print result
 
 if __name__ == '__main__':
     sys.exit(main())
