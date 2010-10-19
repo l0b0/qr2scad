@@ -94,7 +94,7 @@ def qr2scad(stream):
     qr_side = new_size
 
     img_matrix = img.load()
-    
+
     result = ''
 
     result += 'module qrcode() {\n'

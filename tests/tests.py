@@ -40,7 +40,7 @@ class TestConvert(unittest.TestCase):
             '')
         self.assertNotEqual(
             result,
-            'module qrcode() {\n}\nqrcode();\n')
+            'module qrcode() {\n}\nqrcode();')
 
 
     def test_rgb(self):
@@ -51,19 +51,18 @@ class TestConvert(unittest.TestCase):
             '')
         self.assertNotEqual(
             result,
-            'module qrcode() {\n}\nqrcode();\n')
+            'module qrcode() {\n}\nqrcode();')
 
 
     def test_big(self):
         """Check that a big image gives output."""
-        self.input_stream = open(EXAMPLE_BIG)
-        result = qr2scad.qr2scad(self.input_stream)
+        result = qr2scad.qr2scad(open(EXAMPLE_BIG))
         self.assertNotEqual(
             result,
             '')
         self.assertNotEqual(
             result,
-            'module qrcode() {\n}\nqrcode();\n')
+            'module qrcode() {\n}\nqrcode();')
 
 
     def test_equal(self):
@@ -79,7 +78,7 @@ class TestConvert(unittest.TestCase):
             '')
         self.assertNotEqual(
             result_big,
-            'module qrcode() {\n}\nqrcode();\n')
+            'module qrcode() {\n}\nqrcode();')
         self.assertNotEqual(
             result_bw,
             '')
