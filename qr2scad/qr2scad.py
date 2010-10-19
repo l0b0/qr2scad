@@ -17,14 +17,6 @@ The result can be used in an existing OpenSCAD file as follows:
 3. Remove the residue around the holes with a piece of cloth, leaving the color
 in the holes intact.
 
-This code does not optimize the output in any way. If you get a really big
-result file, try to scale it down and verify that it is still readable
-using <http://zxing.org/w/decode.jspx>.
-
-Installation / upgrade:
-
-sudo easy_install -U qr2scad
-
 Examples:
 
 qr2scad < example.png > example.scad
@@ -118,6 +110,9 @@ def qr2scad(stream):
                 }
     result += '}'
     result += 'qrcode();'
+
+    return result
+
 
 def main(argv = None):
     result = qr2scad(sys.stdin)

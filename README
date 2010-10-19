@@ -1,6 +1,6 @@
 qr2scad.py - Convert QR code images to OpenSCAD.
 
-Installation: sudo easy_install qr2scad
+Installation / upgrade: sudo easy_install -U qr2scad
 
 Dependencies: Python Imaging Library (PIL)
 

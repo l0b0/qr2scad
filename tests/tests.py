@@ -34,6 +34,9 @@ class TestConvert(unittest.TestCase):
         result = qr2scad.qr2scad(open(EXAMPLE_BW))
         self.assertNotEqual(
             result,
+            None)
+        self.assertNotEqual(
+            result,
             '')
         self.assertNotEqual(
             result,

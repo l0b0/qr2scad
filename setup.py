@@ -10,7 +10,7 @@ from qr2scad.qr2scad import __doc__ as module_doc
 
 setup(
     name = 'qr2scad',
-    version = '0.6',
+    version = '0.6.1',
     description = 'QR code to OpenSCAD converter',
     long_description = module_doc,
     url = 'http://github.com/l0b0/qr2scad',
