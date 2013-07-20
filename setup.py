@@ -14,7 +14,7 @@ setup(
     url='http://github.com/l0b0/qr2scad',
     keywords='QR code QRcode convert converter OpenSCAD SCAD',
     packages=find_packages(exclude=['tests']),
-    install_requires=['PIL'],
+    install_requires=['pillow'],
     entry_points={
         'console_scripts': ['qr2scad=qr2scad.qr2scad:main']},
     classifiers=[
