@@ -1,4 +1,5 @@
-qr2scad.py - Convert QR code images to OpenSCAD.
+`qr2scad` QR code to OpenSCAD converter
+=======================================
 
 
 Installation / upgrade
