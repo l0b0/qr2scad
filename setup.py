@@ -21,7 +21,7 @@ setup(
     description='QR code to OpenSCAD converter',
     long_description=__doc__,
     url=__url__,
-    keywords='QR code QRcode convert converter OpenSCAD SCAD',
+    keywords='QR code QRcode convert converter OpenSCAD SCAD CAD',
     packages=[__package__],
     install_requires=['pillow'],
     entry_points={
