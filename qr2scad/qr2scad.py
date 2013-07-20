@@ -79,8 +79,11 @@ def qr2scad(stream):
 
     qr_side = width
 
+    # QR code superpixel size
+    qr_pixel_size = (list(img.getdata()).index(0) / PDP_SIDE)
+
     # Get the resize factor from the PDP size
-    new_size = qr_side / (list(img.getdata()).index(0) / (PDP_SIDE - 1))
+    new_size = qr_side / qr_pixel_size
 
     # Set a more reasonable size
     img = img.resize((new_size, new_size))
