@@ -97,7 +97,7 @@ def qr2scad(stream):
 
     result = ''
 
-    result += 'module qrcode() {\n'
+    result += 'module qr_code() {\n'
     for row in range(qr_side):
         for column in range(qr_side):
             if img_matrix[column, row] != 0:
