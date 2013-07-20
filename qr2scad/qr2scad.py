@@ -24,9 +24,7 @@ qr2scad < example.png > example.scad
 
 <http://www.thingiverse.com/thing:4448>
 
-Bugs:
-
-Please email bug reports to victor dot engmark at gmail dot com.
+Bugs: <https://github.com/l0b0/qr2scad/issues>
 """
 
 from PIL import Image, ImageOps
