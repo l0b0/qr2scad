@@ -104,7 +104,8 @@ def qr2scad(stream):
                 result += ' cube([%(block_side)s, %(block_side)s, 1]);\n' % {
                     'block_side': BLOCK_SIDE
                 }
-    result += '}'
+    result += '}\n'
+    result += 'qr_code_size = %d;' % (qr_side)
 
     return result
 
