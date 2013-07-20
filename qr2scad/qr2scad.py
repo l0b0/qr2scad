@@ -109,7 +109,6 @@ def qr2scad(stream):
                     'block_side': BLOCK_SIDE
                 }
     result += '}\n'
-    result += 'qrcode();'
 
     return result
 
