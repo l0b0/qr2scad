@@ -114,7 +114,7 @@ def qr2scad(stream):
     return result
 
 
-def main(argv = None):
+def main(argv=None):
     result = qr2scad(sys.stdin)
     print result
 
