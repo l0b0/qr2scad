@@ -1,4 +1,4 @@
-**/*.pyc
+*.pyc
 *.scad
 build/
 dist/
