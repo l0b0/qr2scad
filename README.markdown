@@ -6,7 +6,7 @@ Why use this? If someone sees the QR code on your thing in real life, they can f
 Installation / upgrade
 ----------------------
 
-    pip install --upgrade qr2scad
+    pip install --upgrade https://github.com/l0b0/qr2scad/tarball/master
 
 How to use
 ----------
