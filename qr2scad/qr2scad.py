@@ -29,11 +29,6 @@ Bugs:
 Please email bug reports to victor dot engmark at gmail dot com.
 """
 
-__author__ = 'Victor Engmark'
-__email__ = 'victor.engmark@gmail.com'
-__copyright__ = 'Copyright (C) 2010 Victor Engmark'
-__license__ = 'GPLv3'
-
 from PIL import Image, ImageOps
 from signal import signal, SIGPIPE, SIG_DFL
 import sys
