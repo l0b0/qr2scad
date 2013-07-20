@@ -4,10 +4,6 @@ Installation / upgrade:
 
     sudo easy_install -U qr2scad
 
-Dependencies:
-
-* Python Imaging Library (PIL)
-
 Use:
 
     qr2scad < qr_code.png > qr_code.scad

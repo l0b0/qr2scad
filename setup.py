@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 """
 Setup configuration
-
-Prerequisites: PIL
 """
 
 from setuptools import find_packages, setup
