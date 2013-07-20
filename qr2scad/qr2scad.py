@@ -91,7 +91,11 @@ def qr2scad(stream):
 
     img_matrix = img.load()
 
-    result = ''
+    result = 'module _qr_code_dot() {\n'
+    result += '    cube([%(block_side)s, %(block_side)s, 1]);\n' % {
+        'block_side': BLOCK_SIDE
+    }
+    result += '}\n'
 
     result += 'module qr_code() {\n'
     for row in range(qr_side):
@@ -101,9 +105,7 @@ def qr2scad(stream):
                     'x': BLOCK_SIZE * column - qr_side / 2,
                     'y': -BLOCK_SIZE * row + qr_side / 2
                 }
-                result += ' cube([%(block_side)s, %(block_side)s, 1]);\n' % {
-                    'block_side': BLOCK_SIDE
-                }
+                result += ' _qr_code_dot();\n'
     result += '}\n'
     result += 'qr_code_size = %d;' % (qr_side)
 
