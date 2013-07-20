@@ -42,7 +42,7 @@ setup(
     author_email=__email__,
     maintainer=__maintainer__,
     maintainer_email=__email__,
-    download_url='https://github.com/l0b0/qr2scad/tarball/master',
+    download_url='https://github.com/l0b0/qr2scad/tarball/v' + __version__,
     platforms=['POSIX', 'Windows'],
     license=__license__,
 )
