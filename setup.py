@@ -3,17 +3,26 @@
 Setup configuration
 """
 
-from setuptools import find_packages, setup
-from qr2scad.qr2scad import __doc__ as module_doc
+from setuptools import setup
+from qr2scad import (
+    __package__,
+    __version__,
+    __doc__,
+    __url__,
+    __author__,
+    __email__,
+    __maintainer__,
+    __license__,
+)
 
 setup(
-    name='qr2scad',
-    version='0.6.2',
+    name=__package__,
+    version=__version__,
     description='QR code to OpenSCAD converter',
-    long_description=module_doc,
-    url='http://github.com/l0b0/qr2scad',
+    long_description=__doc__,
+    url=__url__,
     keywords='QR code QRcode convert converter OpenSCAD SCAD',
-    packages=find_packages(exclude=['tests']),
+    packages=[__package__],
     install_requires=['pillow'],
     entry_points={
         'console_scripts': ['qr2scad=qr2scad.qr2scad:main']},
@@ -29,11 +38,11 @@ setup(
         'Topic :: Multimedia :: Graphics :: Graphics Conversion'
     ],
     test_suite='tests.tests',
-    author='Victor Engmark',
-    author_email='victor.engmark@gmail.com',
-    maintainer='Victor Engmark',
-    maintainer_email='victor.engmark@gmail.com',
+    author=__author__,
+    author_email=__email__,
+    maintainer=__maintainer__,
+    maintainer_email=__email__,
     download_url='http://github.com/l0b0/qr2scad',
     platforms=['POSIX', 'Windows'],
-    license='GPL v3 or newer',
+    license=__license__,
 )
