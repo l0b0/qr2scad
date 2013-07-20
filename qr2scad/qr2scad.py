@@ -107,8 +107,7 @@ def qr2scad(stream):
 
 
 def main(argv=None):
-    result = qr2scad(sys.stdin)
-    print result
+    print qr2scad(sys.stdin)
 
 if __name__ == '__main__':
     sys.exit(main())
