@@ -8,6 +8,10 @@ Installation / upgrade
 
     pip install --upgrade https://github.com/l0b0/qr2scad/tarball/master
 
+To install a specific version `X.Y.Z` (only 0.6.2 onward):
+
+    pip install https://github.com/l0b0/qr2scad/tarball/vX.Y.Z
+
 How to use
 ----------
 
