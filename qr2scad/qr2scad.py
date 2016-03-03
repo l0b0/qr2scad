@@ -38,11 +38,11 @@ BLOCK_PADDING.
 """
 
 BLOCK_PADDING = 0.01
-"""Cubes have to be less than 1 unit wide. Otherwise you will get the message
+"""Cubes can't be exactly 1 unit wide. Otherwise you will get the message
 "Object isn't a valid 2-manifold!" on STL export (see
 <http://en.wikibooks.org/wiki/OpenSCAD_User_Manual/STL_Import_and_Export>)."""
 
-BLOCK_SIDE = BLOCK_SIZE - BLOCK_PADDING
+BLOCK_SIDE = BLOCK_SIZE + BLOCK_PADDING
 """This is the actual side length of a block."""
 
 PDP_SIDE = 7
